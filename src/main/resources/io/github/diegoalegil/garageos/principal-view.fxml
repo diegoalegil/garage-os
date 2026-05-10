@@ -3,11 +3,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane xmlns="http://javafx.com/javafx/21"
-           xmlns:fx="http://javafx.com/fxml/1"
-           prefWidth="400"
-           prefHeight="300">
+<StackPane prefHeight="300" prefWidth="400" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
     
-    <Label text="¡Bienvenido a GarageOS!"/>
+    <Label text="Tu Garaje en una app" />
     
 </StackPane>
