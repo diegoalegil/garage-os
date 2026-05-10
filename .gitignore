@@ -31,3 +31,6 @@ Icon?
 
 # Thumbnails
 ._*
+
+# Maven build output
+target/
