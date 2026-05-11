@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane prefHeight="300" prefWidth="400" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="300" prefWidth="400" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.diegoalegil.garageos.controllers.PrincipalController">
     
-    <Label text="Tu Garaje en una app" />
+    <Label fx:id="saludoLabel" text="Tu Garaje en una app" />
+    <Button fx:id="cambiarButton" text="Cambiar Saludo" onAction="#cambiarSaludo"/>
     
 </StackPane>
