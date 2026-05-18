@@ -76,6 +76,19 @@ public class VehiculoSqliteRepository extends SQLiteConnectionManager implements
 
     @Override
     public Optional<Vehiculo> buscarPorMatricula(String matricula) {
+        try (Connection connection = this.getConnection();
+                PreparedStatement sentencia = connection.prepareStatement(
+                        "SELECT * FROM vehiculos WHERE matricula = ?")) {
+
+            sentencia.setString(1, matricula);
+            ResultSet resultado = sentencia.executeQuery();
+
+            if (resultado.next()) {
+                return Optional.of(map(resultado));
+            }
+        } catch (Exception e) {
+            System.err.println("Error buscando por matricula " + e);
+        }
         return Optional.empty();
     }
 
@@ -83,7 +96,8 @@ public class VehiculoSqliteRepository extends SQLiteConnectionManager implements
     public boolean eliminar(String matricula) {
 
         try (Connection connection = this.getConnection();
-                PreparedStatement sentencia = connection.prepareStatement("DELETE FROM vehiculos WHERE matricula = ?")) {
+                PreparedStatement sentencia = connection
+                        .prepareStatement("DELETE FROM vehiculos WHERE matricula = ?")) {
 
             sentencia.setString(1, matricula);
 
