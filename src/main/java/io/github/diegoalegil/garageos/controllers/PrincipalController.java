@@ -7,6 +7,7 @@ import io.github.diegoalegil.garageos.utils.Validacion;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 public class PrincipalController {
@@ -32,11 +33,15 @@ public class PrincipalController {
     @FXML
     private Label resultadoLabel;
 
+    @FXML
+    private ListView<Vehiculo> vehiculosList;
+
     private final VehiculoService servicio = new VehiculoService();
 
     @FXML
     public void initialize() {
         propulsionCombo.getItems().addAll(TipoPropulsion.values());
+        refrescarLista();
     }
 
     @FXML
@@ -87,10 +92,18 @@ public class PrincipalController {
 
             Vehiculo vehiculo = new Vehiculo(matricula, marca, modelo, anio, kilometraje, propulsion);
             servicio.guardarVehiculo(vehiculo);
+            refrescarLista();
 
             resultadoLabel.setText("Guardado: " + vehiculo);
         } catch (NumberFormatException e) {
             resultadoLabel.setText("Error: año y kilometraje deben ser números");
         }
+    }
+
+    private void refrescarLista() {
+
+        vehiculosList.getItems().clear();
+
+        vehiculosList.getItems().addAll(servicio.obtenerTodos());
     }
 }
