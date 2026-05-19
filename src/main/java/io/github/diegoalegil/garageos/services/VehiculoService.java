@@ -27,6 +27,10 @@ public class VehiculoService {
         return repository.buscarPorMatricula(matricula);
     }
 
+    public boolean actualizarVehiculo(Vehiculo vehiculo) {
+        return repository.actualizar(vehiculo);
+    }
+
     public boolean eliminar(String matricula) {
         return repository.eliminar(matricula);
     }

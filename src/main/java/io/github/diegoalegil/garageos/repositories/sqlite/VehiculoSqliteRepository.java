@@ -93,6 +93,28 @@ public class VehiculoSqliteRepository extends SQLiteConnectionManager implements
     }
 
     @Override
+    public boolean actualizar(Vehiculo vehiculo) {
+
+        try (Connection connection = this.getConnection();
+                PreparedStatement sentencia = connection.prepareStatement(
+                        "UPDATE vehiculos SET marca = ?, modelo = ?, anio = ?, kilometraje = ?, tipo_propulsion = ? WHERE matricula = ?")) {
+
+            sentencia.setString(1, vehiculo.getMarca());
+            sentencia.setString(2, vehiculo.getModelo());
+            sentencia.setInt(3, vehiculo.getAnio());
+            sentencia.setInt(4, vehiculo.getKilometraje());
+            sentencia.setString(5, vehiculo.getTipoPropulsion().name());
+            sentencia.setString(6, vehiculo.getMatricula());
+
+            return sentencia.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            System.err.println("Error actualizando el vehiculo" + e);
+            return false;
+        }
+    }
+
+    @Override
     public boolean eliminar(String matricula) {
 
         try (Connection connection = this.getConnection();
@@ -118,4 +140,5 @@ public class VehiculoSqliteRepository extends SQLiteConnectionManager implements
         TipoPropulsion tipoPropulsion = TipoPropulsion.valueOf(resultado.getString("tipo_propulsion"));
         return new Vehiculo(matricula, marca, modelo, anio, kilometraje, tipoPropulsion);
     }
+
 }

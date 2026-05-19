@@ -34,6 +34,16 @@ public class VehiculoMemoryRepository implements VehiculoRepository {
     }
 
     @Override
+    public boolean actualizar(Vehiculo vehiculo) {
+        int posicion = vehiculos.indexOf(vehiculo);
+        if (posicion == -1) {
+            return false;
+        }
+        vehiculos.set(posicion, vehiculo);
+        return true;
+    }
+
+    @Override
     public boolean eliminar(String matricula) {
 
         Vehiculo vehiculo = new Vehiculo(matricula);

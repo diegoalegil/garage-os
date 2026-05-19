@@ -13,6 +13,8 @@ public interface VehiculoRepository {
 
     Optional<Vehiculo> buscarPorMatricula(String matricula);
 
+    boolean actualizar(Vehiculo vehiculo);
+
     boolean eliminar(String matricula);
 
 }
