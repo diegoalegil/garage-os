@@ -20,6 +20,7 @@
          <children>
             <Button fx:id="cancelarButton" mnemonicParsing="false" onAction="#cancelarEdicion" text="Cancelar" />
             <Button fx:id="accionButton" mnemonicParsing="false" onAction="#guardarVehiculo" text="Guardar" />
+            <Button fx:id="eliminarButton" mnemonicParsing="false" onAction="#eliminarVehiculo" text="Eliminar" />
          </children>
       </HBox>
       <Label fx:id="resultadoLabel" />

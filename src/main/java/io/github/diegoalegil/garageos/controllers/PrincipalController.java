@@ -1,11 +1,15 @@
 package io.github.diegoalegil.garageos.controllers;
 
+import java.util.Optional;
+
 import io.github.diegoalegil.garageos.models.TipoPropulsion;
 import io.github.diegoalegil.garageos.models.Vehiculo;
 import io.github.diegoalegil.garageos.services.VehiculoService;
 import io.github.diegoalegil.garageos.utils.Validacion;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -144,5 +148,32 @@ public class PrincipalController {
         matriculaField.setDisable(false);
         accionButton.setText("Guardar");
         vehiculosList.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    private void eliminarVehiculo(){
+        Vehiculo seleccionado = vehiculosList.getSelectionModel().getSelectedItem();
+        if (seleccionado == null) {
+            resultadoLabel.setText("Selecciona un vehiculo para eliminar");
+            return;
+        }
+
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle("Confirmar eliminacion");
+        alerta.setHeaderText("¿Eliminar este vehiculo?");
+        alerta.setContentText(seleccionado.toString());
+
+        Optional<ButtonType> respuesta = alerta.showAndWait();
+        if (respuesta.isPresent() && respuesta.get() == ButtonType.OK) {
+            boolean eliminado = servicio.eliminar(seleccionado.getMatricula());
+            if (eliminado) {
+                resultadoLabel.setText("Eliminado: " + seleccionado);
+                refrescarLista();
+                cancelarEdicion();
+            } else{
+                resultadoLabel.setText("No se pudo eliminar");
+            }
+
+        }
     }
 }
