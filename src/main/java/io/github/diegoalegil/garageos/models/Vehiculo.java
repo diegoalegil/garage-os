@@ -94,8 +94,8 @@ public class Vehiculo {
 
     @Override
     public String toString() {
-        return "Vehiculo [matricula=" + matricula + ", marca=" + marca + ", modelo=" + modelo + ", anio=" + anio
-                + ", kilometraje=" + kilometraje + ", tipoPropulsion=" + tipoPropulsion + "]";
+        return matricula + " - " + marca + " " + modelo + " (" + anio + ") - " + kilometraje + " km - "
+                + tipoPropulsion;
     }
 
 }

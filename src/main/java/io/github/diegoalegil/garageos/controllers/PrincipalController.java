@@ -1,9 +1,13 @@
 package io.github.diegoalegil.garageos.controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
+import io.github.diegoalegil.garageos.models.Mantenimiento;
 import io.github.diegoalegil.garageos.models.TipoPropulsion;
 import io.github.diegoalegil.garageos.models.Vehiculo;
+import io.github.diegoalegil.garageos.services.MantenimientoService;
 import io.github.diegoalegil.garageos.services.VehiculoService;
 import io.github.diegoalegil.garageos.utils.Validacion;
 import javafx.fxml.FXML;
@@ -44,7 +48,30 @@ public class PrincipalController {
     @FXML
     private ListView<Vehiculo> vehiculosList;
 
+    @FXML
+    private TextField fechaMantenimientoField;
+
+    @FXML
+    private TextField descripcionMantenimientoField;
+
+    @FXML
+    private TextField costeMantenimientoField;
+
+    @FXML
+    private TextField kmMantenimientoField;
+
+    @FXML
+    private Button guardarMantenimientoButton;
+
+    @FXML
+    private ListView<Mantenimiento> mantenimientosList;
+
+    @FXML
+    private Label resultadoMantenimientoLabel;
+
     private final VehiculoService servicio = new VehiculoService();
+
+    private final MantenimientoService mantenimientoService = new MantenimientoService();
 
     @FXML
     public void initialize() {
@@ -60,6 +87,7 @@ public class PrincipalController {
                 propulsionCombo.setValue(newVal.getTipoPropulsion());
                 matriculaField.setDisable(true);
                 accionButton.setText("Actualizar");
+                refrescarMantenimientos(newVal.getMatricula());
             }
         });
     }
@@ -137,6 +165,11 @@ public class PrincipalController {
         vehiculosList.getItems().addAll(servicio.obtenerTodos());
     }
 
+    private void refrescarMantenimientos(String matricula) {
+        mantenimientosList.getItems().clear();
+        mantenimientosList.getItems().addAll(mantenimientoService.obtenerPorMatricula(matricula));
+    }
+
     @FXML
     private void cancelarEdicion() {
         matriculaField.clear();
@@ -151,7 +184,7 @@ public class PrincipalController {
     }
 
     @FXML
-    private void eliminarVehiculo(){
+    private void eliminarVehiculo() {
         Vehiculo seleccionado = vehiculosList.getSelectionModel().getSelectedItem();
         if (seleccionado == null) {
             resultadoLabel.setText("Selecciona un vehiculo para eliminar");
@@ -170,10 +203,51 @@ public class PrincipalController {
                 resultadoLabel.setText("Eliminado: " + seleccionado);
                 refrescarLista();
                 cancelarEdicion();
-            } else{
+            } else {
                 resultadoLabel.setText("No se pudo eliminar");
             }
 
         }
+    }
+
+    @FXML
+    private void guardarMantenimiento() {
+        Vehiculo seleccionado = vehiculosList.getSelectionModel().getSelectedItem();
+        if (seleccionado == null) {
+            resultadoMantenimientoLabel.setText("Selecciona un vehículo primero");
+            return;
+        }
+
+        try {
+            LocalDate fechaRevision = LocalDate.parse(fechaMantenimientoField.getText());
+            String descripcion = descripcionMantenimientoField.getText();
+            double coste = Double.parseDouble(costeMantenimientoField.getText());
+            int kmEnLaRevision = Integer.parseInt(kmMantenimientoField.getText());
+
+            Mantenimiento mantenimiento = new Mantenimiento(
+                    seleccionado.getMatricula(),
+                    fechaRevision,
+                    descripcion,
+                    coste,
+                    kmEnLaRevision);
+
+            mantenimientoService.guardarMantenimiento(mantenimiento);
+            resultadoMantenimientoLabel.setText("Mantenimiento guardado");
+
+            refrescarMantenimientos(seleccionado.getMatricula());
+            limpiarFormularioMantenimiento();
+
+        } catch (DateTimeParseException e) {
+            resultadoMantenimientoLabel.setText("Fecha inválida. Usa YYYY-MM-DD");
+        } catch (NumberFormatException e) {
+            resultadoMantenimientoLabel.setText("Coste y km deben ser números");
+        }
+    }
+
+    private void limpiarFormularioMantenimiento() {
+        fechaMantenimientoField.clear();
+        descripcionMantenimientoField.clear();
+        costeMantenimientoField.clear();
+        kmMantenimientoField.clear();
     }
 }

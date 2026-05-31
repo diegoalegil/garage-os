@@ -13,7 +13,7 @@ public class PrincipalApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 PrincipalApplication.class.getResource("principal-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 400, 300);
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 650);
 
         stage.setTitle("GarageOS");
         stage.setScene(scene);

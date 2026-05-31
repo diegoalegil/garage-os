@@ -28,9 +28,13 @@ replay_pid*
 .AppleDouble
 .LSOverride
 Icon?
+Icon
 
 # Thumbnails
 ._*
 
 # Maven build output
 target/
+
+# Local handoff
+handoff.md
