@@ -60,7 +60,8 @@ public class VehiculoSqliteRepository extends SQLiteConnectionManager implements
         List<Vehiculo> vehiculos = new ArrayList<>();
 
         try (Connection connection = this.getConnection();
-                PreparedStatement sentencia = connection.prepareStatement("SELECT * FROM vehiculos")) {
+                PreparedStatement sentencia = connection
+                        .prepareStatement("SELECT * FROM vehiculos ORDER BY marca, modelo, matricula")) {
 
             ResultSet resultado = sentencia.executeQuery();
 

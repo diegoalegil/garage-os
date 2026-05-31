@@ -63,7 +63,8 @@ public class MantenimientoSqliteRepository extends SQLiteConnectionManager imple
 
         try (Connection connection = this.getConnection();
                 PreparedStatement sentencia = connection
-                        .prepareStatement("SELECT * FROM mantenimientos WHERE matricula = ?")) {
+                        .prepareStatement(
+                                "SELECT * FROM mantenimientos WHERE matricula = ? ORDER BY fecha_revision DESC, id DESC")) {
 
             sentencia.setString(1, matricula);
 
