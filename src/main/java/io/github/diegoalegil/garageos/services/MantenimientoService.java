@@ -34,4 +34,8 @@ public class MantenimientoService {
     public boolean eliminarMantenimiento(int id) {
         return repository.eliminar(id);
     }
+
+    public void eliminarPorMatricula(String matricula) {
+        repository.eliminarPorMatricula(matricula);
+    }
 }

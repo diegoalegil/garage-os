@@ -207,7 +207,7 @@ public class PrincipalController {
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         alerta.setTitle("Confirmar eliminacion");
         alerta.setHeaderText("¿Eliminar este vehiculo?");
-        alerta.setContentText(seleccionado.toString());
+        alerta.setContentText(seleccionado + "\nTambién se eliminarán sus mantenimientos.");
 
         Optional<ButtonType> respuesta = alerta.showAndWait();
         if (respuesta.isPresent() && respuesta.get() == ButtonType.OK) {

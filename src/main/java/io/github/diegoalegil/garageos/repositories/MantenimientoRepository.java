@@ -16,4 +16,6 @@ public interface MantenimientoRepository {
     boolean actualizar(Mantenimiento mantenimiento); // UPDATE
 
     boolean eliminar(int id);
+
+    void eliminarPorMatricula(String matricula);
 }

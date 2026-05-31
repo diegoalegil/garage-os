@@ -136,6 +136,20 @@ public class MantenimientoSqliteRepository extends SQLiteConnectionManager imple
         }
     }
 
+    @Override
+    public void eliminarPorMatricula(String matricula) {
+        try (Connection connection = this.getConnection();
+                PreparedStatement sentencia = connection
+                        .prepareStatement("DELETE FROM mantenimientos WHERE matricula = ?")) {
+
+            sentencia.setString(1, matricula);
+            sentencia.executeUpdate();
+
+        } catch (Exception e) {
+            System.err.println("Error eliminando mantenimientos por matricula" + e);
+        }
+    }
+
     private Mantenimiento mapRow(ResultSet resultado) throws SQLException {
         int id = resultado.getInt("id");
         String matricula = resultado.getString("matricula");
