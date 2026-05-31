@@ -36,5 +36,9 @@ Icon
 # Maven build output
 target/
 
+# Local application data
+/data/
+/src/main/resources/data/sqlite/*.db
+
 # Local handoff
 handoff.md
