@@ -14,6 +14,7 @@ public class PrincipalApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 PrincipalApplication.class.getResource("principal-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 650);
+        scene.getStylesheets().add(PrincipalApplication.class.getResource("styles.css").toExternalForm());
 
         stage.setTitle("GarageOS");
         stage.setScene(scene);

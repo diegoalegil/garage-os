@@ -1,0 +1,84 @@
+.app-root {
+    -fx-background-color: #f4f6f8;
+    -fx-padding: 24;
+    -fx-font-family: "System";
+}
+
+.panel {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #d8dee6;
+    -fx-border-radius: 8;
+    -fx-padding: 22;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1f2933;
+}
+
+.text-field,
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #c8d0da;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-pref-height: 34;
+}
+
+.text-field:focused,
+.combo-box:focused {
+    -fx-border-color: #2f80ed;
+    -fx-effect: dropshadow(gaussian, rgba(47, 128, 237, 0.22), 6, 0, 0, 0);
+}
+
+.button,
+.primary-button,
+.secondary-button,
+.danger-button {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-padding: 8 14;
+}
+
+.primary-button {
+    -fx-background-color: #2f80ed;
+    -fx-text-fill: #ffffff;
+}
+
+.primary-button:hover {
+    -fx-background-color: #2568c7;
+}
+
+.secondary-button {
+    -fx-background-color: #eef2f6;
+    -fx-text-fill: #243447;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #dfe7ef;
+}
+
+.danger-button {
+    -fx-background-color: #fce8e6;
+    -fx-text-fill: #b42318;
+}
+
+.danger-button:hover {
+    -fx-background-color: #fac5bf;
+}
+
+.list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d8dee6;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.status-label {
+    -fx-text-fill: #36506b;
+    -fx-font-weight: bold;
+}
