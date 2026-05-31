@@ -88,6 +88,17 @@ public class PrincipalController {
                 matriculaField.setDisable(true);
                 accionButton.setText("Actualizar");
                 refrescarMantenimientos(newVal.getMatricula());
+                limpiarFormularioMantenimiento();
+            }
+        });
+
+        mantenimientosList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                fechaMantenimientoField.setText(newVal.getFechaRevision().toString());
+                descripcionMantenimientoField.setText(newVal.getDescripcion());
+                costeMantenimientoField.setText(String.valueOf(newVal.getCoste()));
+                kmMantenimientoField.setText(String.valueOf(newVal.getKmEnLaRevision()));
+                guardarMantenimientoButton.setText("Actualizar mantenimiento");
             }
         });
     }
@@ -181,6 +192,8 @@ public class PrincipalController {
         matriculaField.setDisable(false);
         accionButton.setText("Guardar");
         vehiculosList.getSelectionModel().clearSelection();
+        mantenimientosList.getItems().clear();
+        limpiarFormularioMantenimiento();
     }
 
     @FXML
@@ -231,8 +244,19 @@ public class PrincipalController {
                     coste,
                     kmEnLaRevision);
 
-            mantenimientoService.guardarMantenimiento(mantenimiento);
-            resultadoMantenimientoLabel.setText("Mantenimiento guardado");
+            Mantenimiento mantenimientoSeleccionado = mantenimientosList.getSelectionModel().getSelectedItem();
+            if (mantenimientoSeleccionado != null) {
+                mantenimiento.setId(mantenimientoSeleccionado.getId());
+                boolean actualizado = mantenimientoService.actualizarMantenimiento(mantenimiento);
+                if (!actualizado) {
+                    resultadoMantenimientoLabel.setText("No se pudo actualizar el mantenimiento");
+                    return;
+                }
+                resultadoMantenimientoLabel.setText("Mantenimiento actualizado");
+            } else {
+                mantenimientoService.guardarMantenimiento(mantenimiento);
+                resultadoMantenimientoLabel.setText("Mantenimiento guardado");
+            }
 
             refrescarMantenimientos(seleccionado.getMatricula());
             limpiarFormularioMantenimiento();
@@ -249,5 +273,46 @@ public class PrincipalController {
         descripcionMantenimientoField.clear();
         costeMantenimientoField.clear();
         kmMantenimientoField.clear();
+        mantenimientosList.getSelectionModel().clearSelection();
+        guardarMantenimientoButton.setText("Guardar mantenimiento");
+    }
+
+    @FXML
+    private void cancelarEdicionMantenimiento() {
+        limpiarFormularioMantenimiento();
+        resultadoMantenimientoLabel.setText("");
+    }
+
+    @FXML
+    private void eliminarMantenimiento() {
+        Vehiculo vehiculoSeleccionado = vehiculosList.getSelectionModel().getSelectedItem();
+        Mantenimiento mantenimientoSeleccionado = mantenimientosList.getSelectionModel().getSelectedItem();
+
+        if (vehiculoSeleccionado == null) {
+            resultadoMantenimientoLabel.setText("Selecciona un vehículo primero");
+            return;
+        }
+
+        if (mantenimientoSeleccionado == null) {
+            resultadoMantenimientoLabel.setText("Selecciona un mantenimiento para eliminar");
+            return;
+        }
+
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle("Confirmar eliminación");
+        alerta.setHeaderText("¿Eliminar este mantenimiento?");
+        alerta.setContentText(mantenimientoSeleccionado.toString());
+
+        Optional<ButtonType> respuesta = alerta.showAndWait();
+        if (respuesta.isPresent() && respuesta.get() == ButtonType.OK) {
+            boolean eliminado = mantenimientoService.eliminarMantenimiento(mantenimientoSeleccionado.getId());
+            if (eliminado) {
+                resultadoMantenimientoLabel.setText("Mantenimiento eliminado");
+                refrescarMantenimientos(vehiculoSeleccionado.getMatricula());
+                limpiarFormularioMantenimiento();
+            } else {
+                resultadoMantenimientoLabel.setText("No se pudo eliminar el mantenimiento");
+            }
+        }
     }
 }
