@@ -22,6 +22,7 @@
         <junit.version>5.10.2</junit.version>
         <javafx-maven-plugin.version>0.0.8</javafx-maven-plugin.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
     </properties>
     
     <dependencies>
@@ -73,6 +74,12 @@
                 <configuration>
                     <mainClass>io.github.diegoalegil.garageos.PrincipalApplication</mainClass>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
             
         </plugins>
