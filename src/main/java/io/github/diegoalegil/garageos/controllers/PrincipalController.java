@@ -233,9 +233,33 @@ public class PrincipalController {
 
         try {
             LocalDate fechaRevision = LocalDate.parse(fechaMantenimientoField.getText());
-            String descripcion = descripcionMantenimientoField.getText();
+            String descripcion = descripcionMantenimientoField.getText().trim();
             double coste = Double.parseDouble(costeMantenimientoField.getText());
             int kmEnLaRevision = Integer.parseInt(kmMantenimientoField.getText());
+
+            String errorFecha = Validacion.validarFechaMantenimiento(fechaRevision);
+            if (!errorFecha.isEmpty()) {
+                resultadoMantenimientoLabel.setText(errorFecha);
+                return;
+            }
+
+            String errorDescripcion = Validacion.validarDescripcionMantenimiento(descripcion);
+            if (!errorDescripcion.isEmpty()) {
+                resultadoMantenimientoLabel.setText(errorDescripcion);
+                return;
+            }
+
+            String errorCoste = Validacion.validarCosteMantenimiento(coste);
+            if (!errorCoste.isEmpty()) {
+                resultadoMantenimientoLabel.setText(errorCoste);
+                return;
+            }
+
+            String errorKm = Validacion.validarKmMantenimiento(kmEnLaRevision, seleccionado.getKilometraje());
+            if (!errorKm.isEmpty()) {
+                resultadoMantenimientoLabel.setText(errorKm);
+                return;
+            }
 
             Mantenimiento mantenimiento = new Mantenimiento(
                     seleccionado.getMatricula(),

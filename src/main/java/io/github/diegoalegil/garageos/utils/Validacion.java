@@ -1,5 +1,7 @@
 package io.github.diegoalegil.garageos.utils;
 
+import java.time.LocalDate;
+
 import io.github.diegoalegil.garageos.models.TipoPropulsion;
 
 public class Validacion {
@@ -42,6 +44,40 @@ public class Validacion {
     public static String validarPropulsion(TipoPropulsion propulsion) {
         if (propulsion == null) {
             return "Debes seleccionar un tipo de propulsión";
+        }
+        return "";
+    }
+
+    public static String validarFechaMantenimiento(LocalDate fecha) {
+        if (fecha == null) {
+            return "La fecha del mantenimiento no puede estar vacía";
+        }
+        if (fecha.isAfter(LocalDate.now())) {
+            return "La fecha del mantenimiento no puede ser futura";
+        }
+        return "";
+    }
+
+    public static String validarDescripcionMantenimiento(String descripcion) {
+        if (descripcion == null || descripcion.trim().isEmpty()) {
+            return "La descripción del mantenimiento no puede estar vacía";
+        }
+        return "";
+    }
+
+    public static String validarCosteMantenimiento(double coste) {
+        if (coste < 0) {
+            return "El coste del mantenimiento no puede ser negativo";
+        }
+        return "";
+    }
+
+    public static String validarKmMantenimiento(int kmEnLaRevision, int kilometrajeVehiculo) {
+        if (kmEnLaRevision < 0) {
+            return "Los km del mantenimiento no pueden ser negativos";
+        }
+        if (kmEnLaRevision > kilometrajeVehiculo) {
+            return "Los km del mantenimiento no pueden superar los km del vehículo";
         }
         return "";
     }
