@@ -19,6 +19,10 @@ public class MantenimientoService {
         return repository.guardar(mantenimiento);
     }
 
+    public List<Mantenimiento> obtenerTodos() {
+        return repository.obtenerTodos();
+    }
+
     public List<Mantenimiento> obtenerPorMatricula(String matricula) {
         return repository.obtenerPorMatricula(matricula);
     }

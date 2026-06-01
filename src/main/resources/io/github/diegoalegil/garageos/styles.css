@@ -26,6 +26,40 @@
     -fx-text-fill: #1f2933;
 }
 
+.dashboard-bar {
+    -fx-alignment: center-right;
+    -fx-padding: 0 0 0 24;
+}
+
+.dashboard-card,
+.dashboard-card-wide {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 6;
+    -fx-border-color: #d8dee6;
+    -fx-border-radius: 6;
+    -fx-padding: 6 10;
+}
+
+.dashboard-card {
+    -fx-pref-width: 112;
+}
+
+.dashboard-card-wide {
+    -fx-pref-width: 205;
+}
+
+.dashboard-label {
+    -fx-text-fill: #6b7c8f;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.dashboard-value {
+    -fx-text-fill: #1f2933;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
 .content-row {
     -fx-alignment: center;
 }

@@ -85,6 +85,18 @@ public class PrincipalController {
     @FXML
     private Label ultimoMantenimientoLabel;
 
+    @FXML
+    private Label dashboardVehiculosLabel;
+
+    @FXML
+    private Label dashboardMantenimientosLabel;
+
+    @FXML
+    private Label dashboardInversionLabel;
+
+    @FXML
+    private Label dashboardUltimoLabel;
+
     private final VehiculoService servicio = new VehiculoService();
 
     private final MantenimientoService mantenimientoService = new MantenimientoService();
@@ -217,6 +229,7 @@ public class PrincipalController {
         vehiculosCargados.clear();
         vehiculosCargados.addAll(servicio.obtenerTodos());
         aplicarFiltroVehiculos();
+        actualizarDashboard();
     }
 
     private void aplicarFiltroVehiculos() {
@@ -258,6 +271,27 @@ public class PrincipalController {
         mantenimientosList.getItems().clear();
         mantenimientosList.getItems().addAll(mantenimientoService.obtenerPorMatricula(matricula));
         actualizarResumenMantenimientos();
+        actualizarDashboard();
+    }
+
+    private void actualizarDashboard() {
+        List<Mantenimiento> mantenimientos = mantenimientoService.obtenerTodos();
+        double inversionTotal = mantenimientos.stream()
+                .mapToDouble(Mantenimiento::getCoste)
+                .sum();
+
+        dashboardVehiculosLabel.setText(String.valueOf(vehiculosCargados.size()));
+        dashboardMantenimientosLabel.setText(String.valueOf(mantenimientos.size()));
+        dashboardInversionLabel.setText(String.format(Locale.of("es", "ES"), "%.2f €", inversionTotal));
+        dashboardUltimoLabel.setText(obtenerTextoUltimoMantenimiento(mantenimientos));
+    }
+
+    private String obtenerTextoUltimoMantenimiento(List<Mantenimiento> mantenimientos) {
+        return mantenimientos.stream()
+                .max(Comparator.comparing(Mantenimiento::getFechaRevision)
+                        .thenComparing(Mantenimiento::getId))
+                .map(mantenimiento -> mantenimiento.getFechaRevision() + " · " + mantenimiento.getMatricula())
+                .orElse("Sin historial");
     }
 
     private void actualizarResumenMantenimientos() {

@@ -59,6 +59,26 @@ public class MantenimientoSqliteRepository extends SQLiteConnectionManager imple
     }
 
     @Override
+    public List<Mantenimiento> obtenerTodos() {
+        List<Mantenimiento> mantenimientos = new ArrayList<>();
+
+        try (Connection connection = this.getConnection();
+                PreparedStatement sentencia = connection.prepareStatement(
+                        "SELECT * FROM mantenimientos ORDER BY fecha_revision DESC, id DESC")) {
+
+            ResultSet resultado = sentencia.executeQuery();
+
+            while (resultado.next()) {
+                mantenimientos.add(mapRow(resultado));
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error listando mantenimientos" + e);
+        }
+        return mantenimientos;
+    }
+
+    @Override
     public List<Mantenimiento> obtenerPorMatricula(String matricula) {
 
         List<Mantenimiento> mantenimientosPorMatricula = new ArrayList<>();

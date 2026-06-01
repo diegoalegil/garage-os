@@ -9,6 +9,8 @@ public interface MantenimientoRepository {
 
     boolean guardar(Mantenimiento mantenimiento); // INSERT
 
+    List<Mantenimiento> obtenerTodos(); // SELECT all
+
     List<Mantenimiento> obtenerPorMatricula(String matricula); // SELECT WHERE
 
     Optional<Mantenimiento> buscarPorId(int id); // SELECT por id
