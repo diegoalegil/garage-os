@@ -8,7 +8,7 @@ import io.github.diegoalegil.garageos.models.Vehiculo;
 
 public class VehiculoMemoryRepository implements VehiculoRepository {
 
-    List<Vehiculo> vehiculos = new ArrayList<>();
+    private final List<Vehiculo> vehiculos = new ArrayList<>();
 
     @Override
     public boolean guardar(Vehiculo vehiculo) {

@@ -12,7 +12,11 @@ public class MantenimientoService {
     private final MantenimientoRepository repository;
 
     public MantenimientoService() {
-        this.repository = new MantenimientoSqliteRepository();
+        this(new MantenimientoSqliteRepository());
+    }
+
+    public MantenimientoService(MantenimientoRepository repository) {
+        this.repository = repository;
     }
 
     public boolean guardarMantenimiento(Mantenimiento mantenimiento) {

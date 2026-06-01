@@ -15,8 +15,12 @@ public class VehiculoService {
     private final MantenimientoRepository mantenimientoRepository;
 
     public VehiculoService() {
-        this.repository = new VehiculoSqliteRepository();
-        this.mantenimientoRepository = new MantenimientoSqliteRepository();
+        this(new VehiculoSqliteRepository(), new MantenimientoSqliteRepository());
+    }
+
+    public VehiculoService(VehiculoRepository repository, MantenimientoRepository mantenimientoRepository) {
+        this.repository = repository;
+        this.mantenimientoRepository = mantenimientoRepository;
     }
 
     public boolean guardarVehiculo(Vehiculo vehiculo) {
