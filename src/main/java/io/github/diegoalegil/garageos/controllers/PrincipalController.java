@@ -18,6 +18,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 public class PrincipalController {
 
@@ -76,6 +79,7 @@ public class PrincipalController {
     @FXML
     public void initialize() {
         propulsionCombo.getItems().addAll(TipoPropulsion.values());
+        configurarPlaceholders();
         refrescarLista();
         vehiculosList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
@@ -101,6 +105,23 @@ public class PrincipalController {
                 guardarMantenimientoButton.setText("Actualizar mantenimiento");
             }
         });
+    }
+
+    private void configurarPlaceholders() {
+        vehiculosList.setPlaceholder(new Label("No hay vehículos registrados"));
+
+        ImageView imagen = new ImageView(new Image(getClass().getResourceAsStream(
+                "/io/github/diegoalegil/garageos/assets/empty-maintenance.png")));
+        imagen.setFitWidth(150);
+        imagen.setPreserveRatio(true);
+
+        Label texto = new Label("Selecciona un vehículo o añade su primer mantenimiento");
+        texto.getStyleClass().add("empty-state-label");
+
+        VBox placeholder = new VBox(10, imagen, texto);
+        placeholder.getStyleClass().add("empty-state");
+
+        mantenimientosList.setPlaceholder(placeholder);
     }
 
     @FXML

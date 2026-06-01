@@ -100,3 +100,15 @@
     -fx-text-fill: #36506b;
     -fx-font-weight: bold;
 }
+
+.empty-state {
+    -fx-alignment: center;
+    -fx-padding: 16;
+}
+
+.empty-state-label {
+    -fx-text-fill: #6b7c8f;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+}
