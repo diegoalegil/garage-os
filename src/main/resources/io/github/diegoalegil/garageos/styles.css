@@ -70,6 +70,12 @@
     -fx-text-fill: #1f2933;
 }
 
+.mode-label {
+    -fx-text-fill: #6b7c8f;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
 .vehicle-context-card {
     -fx-background-color: #f8fafc;
     -fx-background-radius: 6;

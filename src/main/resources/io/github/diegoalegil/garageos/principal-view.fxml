@@ -57,6 +57,7 @@
             <VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="540.0" spacing="14.0" styleClass="panel">
                <children>
                   <Label styleClass="section-title" text="Vehículos" />
+                  <Label fx:id="modoVehiculoLabel" styleClass="mode-label" text="Alta de vehículo" />
                   <TextField fx:id="buscarVehiculoField" promptText="Buscar por matrícula, marca, modelo o propulsión" />
                   <TextField fx:id="matriculaField" promptText="Matrícula" />
                   <TextField fx:id="marcaField" promptText="Marca" />

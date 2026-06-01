@@ -53,7 +53,13 @@ public class PrincipalController {
     private Label resumenVehiculosLabel;
 
     @FXML
+    private Label modoVehiculoLabel;
+
+    @FXML
     private Button accionButton;
+
+    @FXML
+    private Button eliminarButton;
 
     @FXML
     private ListView<Vehiculo> vehiculosList;
@@ -125,6 +131,7 @@ public class PrincipalController {
         propulsionCombo.getItems().addAll(TipoPropulsion.values());
         configurarPlaceholders();
         limpiarFichaVehiculo();
+        configurarModoAltaVehiculo();
         configurarEstadoFormularioMantenimiento(false);
         refrescarLista();
         buscarVehiculoField.textProperty().addListener((obs, oldVal, newVal) -> aplicarFiltroVehiculos());
@@ -137,7 +144,7 @@ public class PrincipalController {
                 kilometrajeField.setText(String.valueOf(newVal.getKilometraje()));
                 propulsionCombo.setValue(newVal.getTipoPropulsion());
                 matriculaField.setDisable(true);
-                accionButton.setText("Actualizar");
+                configurarModoEdicionVehiculo(newVal);
                 refrescarMantenimientos(newVal.getMatricula());
                 limpiarFormularioMantenimiento();
                 prepararNuevoMantenimiento();
@@ -146,6 +153,7 @@ public class PrincipalController {
                 mantenimientosList.getItems().clear();
                 limpiarFormularioMantenimiento();
                 limpiarFichaVehiculo();
+                configurarModoAltaVehiculo();
                 configurarEstadoFormularioMantenimiento(false);
                 actualizarResumenMantenimientos();
             }
@@ -398,6 +406,18 @@ public class PrincipalController {
         eliminarMantenimientoButton.setDisable(true);
     }
 
+    private void configurarModoAltaVehiculo() {
+        modoVehiculoLabel.setText("Alta de vehículo");
+        accionButton.setText("Guardar");
+        eliminarButton.setDisable(true);
+    }
+
+    private void configurarModoEdicionVehiculo(Vehiculo vehiculo) {
+        modoVehiculoLabel.setText("Editando " + vehiculo.getMatricula());
+        accionButton.setText("Actualizar");
+        eliminarButton.setDisable(false);
+    }
+
     @FXML
     private void cancelarEdicion() {
         matriculaField.clear();
@@ -407,7 +427,7 @@ public class PrincipalController {
         kilometrajeField.clear();
         propulsionCombo.setValue(null);
         matriculaField.setDisable(false);
-        accionButton.setText("Guardar");
+        configurarModoAltaVehiculo();
         vehiculosList.getSelectionModel().clearSelection();
         mantenimientosList.getItems().clear();
         limpiarFormularioMantenimiento();
