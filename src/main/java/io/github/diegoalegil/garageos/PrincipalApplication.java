@@ -3,6 +3,7 @@ package io.github.diegoalegil.garageos;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,6 +18,9 @@ public class PrincipalApplication extends Application {
         scene.getStylesheets().add(PrincipalApplication.class.getResource("styles.css").toExternalForm());
 
         stage.setTitle("GarageOS");
+        stage.getIcons().add(new Image(PrincipalApplication.class.getResourceAsStream("assets/app-icon.png")));
+        stage.setMinWidth(1000);
+        stage.setMinHeight(650);
         stage.setScene(scene);
         stage.show();
     }

@@ -5,49 +5,64 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" styleClass="app-root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.diegoalegil.garageos.controllers.PrincipalController">
+<VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="1000.0" spacing="16.0" styleClass="app-root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.diegoalegil.garageos.controllers.PrincipalController">
    <children>
-      <VBox alignment="CENTER" prefHeight="600.0" prefWidth="480.0" spacing="20" styleClass="panel">
+      <HBox alignment="CENTER_LEFT" prefWidth="940.0" spacing="12.0" styleClass="app-toolbar">
          <children>
-            <Label styleClass="section-title" text="Vehículos" />
-            <TextField fx:id="matriculaField" promptText="Matrícula" />
-            <TextField fx:id="marcaField" promptText="Marca" />
-            <TextField fx:id="modeloField" promptText="Modelo" />
-            <TextField fx:id="anioField" promptText="Año" />
-            <TextField fx:id="kilometrajeField" promptText="Kilometraje" />
-            <ComboBox fx:id="propulsionCombo" prefWidth="150.0" promptText="Propulsión" />
-            <HBox alignment="CENTER" spacing="100.0">
-               <children>
-                  <Button fx:id="cancelarButton" mnemonicParsing="false" onAction="#cancelarEdicion" styleClass="secondary-button" text="Cancelar" />
-                  <Button fx:id="accionButton" mnemonicParsing="false" onAction="#guardarVehiculo" styleClass="primary-button" text="Guardar" />
-                  <Button fx:id="eliminarButton" mnemonicParsing="false" onAction="#eliminarVehiculo" styleClass="danger-button" text="Eliminar" />
-               </children>
-            </HBox>
-            <Label fx:id="resultadoLabel" styleClass="status-label" />
-            <ListView fx:id="vehiculosList" prefHeight="200.0" prefWidth="200.0" />
+            <ImageView fitHeight="38.0" fitWidth="38.0" preserveRatio="true">
+               <image>
+                  <Image url="@assets/app-icon.png" />
+               </image>
+            </ImageView>
+            <Label styleClass="app-title" text="GarageOS" />
          </children>
-          
-      </VBox>
-      <VBox alignment="CENTER" prefHeight="600.0" prefWidth="420.0" spacing="10.0" styleClass="panel">
+      </HBox>
+      <HBox alignment="CENTER" spacing="20.0" styleClass="content-row">
          <children>
-            <Label styleClass="section-title" text="Mantenimientos" />
-            <TextField fx:id="fechaMantenimientoField" promptText="Fecha (YYYY-MM-DD)" />
-            <TextField fx:id="descripcionMantenimientoField" promptText="Descripción" />
-            <TextField fx:id="costeMantenimientoField" promptText="Coste" />
-            <TextField fx:id="kmMantenimientoField" promptText="Km en la revisión" />
-            <HBox alignment="CENTER" spacing="40.0">
+            <VBox alignment="TOP_CENTER" prefHeight="540.0" prefWidth="480.0" spacing="14.0" styleClass="panel">
                <children>
-                  <Button mnemonicParsing="false" onAction="#cancelarEdicionMantenimiento" styleClass="secondary-button" text="Cancelar" />
-                  <Button fx:id="guardarMantenimientoButton" mnemonicParsing="false" onAction="#guardarMantenimiento" styleClass="primary-button" text="Guardar mantenimiento" />
-                  <Button mnemonicParsing="false" onAction="#eliminarMantenimiento" styleClass="danger-button" text="Eliminar" />
+                  <Label styleClass="section-title" text="Vehículos" />
+                  <TextField fx:id="matriculaField" promptText="Matrícula" />
+                  <TextField fx:id="marcaField" promptText="Marca" />
+                  <TextField fx:id="modeloField" promptText="Modelo" />
+                  <TextField fx:id="anioField" promptText="Año" />
+                  <TextField fx:id="kilometrajeField" promptText="Kilometraje" />
+                  <ComboBox fx:id="propulsionCombo" prefWidth="150.0" promptText="Propulsión" />
+                  <HBox alignment="CENTER" spacing="44.0">
+                     <children>
+                        <Button fx:id="cancelarButton" mnemonicParsing="false" onAction="#cancelarEdicion" prefWidth="96.0" styleClass="secondary-button" text="Cancelar" />
+                        <Button fx:id="accionButton" mnemonicParsing="false" onAction="#guardarVehiculo" prefWidth="96.0" styleClass="primary-button" text="Guardar" />
+                        <Button fx:id="eliminarButton" mnemonicParsing="false" onAction="#eliminarVehiculo" prefWidth="96.0" styleClass="danger-button" text="Eliminar" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="resultadoLabel" styleClass="status-label" />
+                  <ListView fx:id="vehiculosList" prefHeight="170.0" prefWidth="200.0" />
                </children>
-            </HBox>
-            <ListView fx:id="mantenimientosList" prefHeight="200.0" prefWidth="200.0" />
-            <Label fx:id="resultadoMantenimientoLabel" styleClass="status-label" />
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="540.0" prefWidth="420.0" spacing="14.0" styleClass="panel">
+               <children>
+                  <Label styleClass="section-title" text="Mantenimientos" />
+                  <TextField fx:id="fechaMantenimientoField" promptText="Fecha (YYYY-MM-DD)" />
+                  <TextField fx:id="descripcionMantenimientoField" promptText="Descripción" />
+                  <TextField fx:id="costeMantenimientoField" promptText="Coste" />
+                  <TextField fx:id="kmMantenimientoField" promptText="Km en la revisión" />
+                  <HBox alignment="CENTER" spacing="16.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#cancelarEdicionMantenimiento" prefWidth="90.0" styleClass="secondary-button" text="Cancelar" />
+                        <Button fx:id="guardarMantenimientoButton" mnemonicParsing="false" onAction="#guardarMantenimiento" prefWidth="150.0" styleClass="primary-button" text="Guardar mant." />
+                        <Button mnemonicParsing="false" onAction="#eliminarMantenimiento" prefWidth="90.0" styleClass="danger-button" text="Eliminar" />
+                     </children>
+                  </HBox>
+                  <ListView fx:id="mantenimientosList" prefHeight="245.0" prefWidth="200.0" />
+                  <Label fx:id="resultadoMantenimientoLabel" styleClass="status-label" />
+               </children>
+            </VBox>
          </children>
-      </VBox>
+      </HBox>
    </children>
-</HBox>
+</VBox>

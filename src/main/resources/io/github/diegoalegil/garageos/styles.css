@@ -1,6 +1,6 @@
 .app-root {
     -fx-background-color: #f4f6f8;
-    -fx-padding: 24;
+    -fx-padding: 18 24 20 24;
     -fx-font-family: "System";
 }
 
@@ -10,6 +10,24 @@
     -fx-border-color: #d8dee6;
     -fx-border-radius: 8;
     -fx-padding: 22;
+}
+
+.app-toolbar {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #d8dee6;
+    -fx-border-radius: 8;
+    -fx-padding: 10 16;
+}
+
+.app-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1f2933;
+}
+
+.content-row {
+    -fx-alignment: center;
 }
 
 .section-title {
