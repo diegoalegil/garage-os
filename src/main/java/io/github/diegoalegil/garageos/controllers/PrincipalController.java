@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 
 import io.github.diegoalegil.garageos.models.Mantenimiento;
 import io.github.diegoalegil.garageos.models.TipoPropulsion;
@@ -22,6 +23,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 
 public class PrincipalController {
 
@@ -129,6 +131,7 @@ public class PrincipalController {
     @FXML
     public void initialize() {
         propulsionCombo.getItems().addAll(TipoPropulsion.values());
+        configurarFormatosEntrada();
         configurarPlaceholders();
         limpiarFichaVehiculo();
         configurarModoAltaVehiculo();
@@ -163,7 +166,7 @@ public class PrincipalController {
             if (newVal != null) {
                 fechaMantenimientoPicker.setValue(newVal.getFechaRevision());
                 descripcionMantenimientoField.setText(newVal.getDescripcion());
-                costeMantenimientoField.setText(String.valueOf(newVal.getCoste()));
+                costeMantenimientoField.setText(String.format(Locale.of("es", "ES"), "%.2f", newVal.getCoste()));
                 kmMantenimientoField.setText(String.valueOf(newVal.getKmEnLaRevision()));
                 guardarMantenimientoButton.setText("Actualizar mant.");
                 eliminarMantenimientoButton.setDisable(false);
@@ -182,6 +185,33 @@ public class PrincipalController {
         Label mantenimientosPlaceholder = new Label("Selecciona un vehículo o añade su primer mantenimiento");
         mantenimientosPlaceholder.getStyleClass().add("empty-state-label");
         mantenimientosList.setPlaceholder(mantenimientosPlaceholder);
+    }
+
+    private void configurarFormatosEntrada() {
+        anioField.setTextFormatter(crearFiltroEnteros());
+        kilometrajeField.setTextFormatter(crearFiltroEnteros());
+        kmMantenimientoField.setTextFormatter(crearFiltroEnteros());
+        costeMantenimientoField.setTextFormatter(crearFiltroDecimal());
+    }
+
+    private TextFormatter<String> crearFiltroEnteros() {
+        UnaryOperator<TextFormatter.Change> filtro = change -> {
+            if (change.getControlNewText().matches("\\d*")) {
+                return change;
+            }
+            return null;
+        };
+        return new TextFormatter<>(filtro);
+    }
+
+    private TextFormatter<String> crearFiltroDecimal() {
+        UnaryOperator<TextFormatter.Change> filtro = change -> {
+            if (change.getControlNewText().matches("\\d*([,.]\\d{0,2})?")) {
+                return change;
+            }
+            return null;
+        };
+        return new TextFormatter<>(filtro);
     }
 
     @FXML
@@ -472,7 +502,7 @@ public class PrincipalController {
         try {
             LocalDate fechaRevision = fechaMantenimientoPicker.getValue();
             String descripcion = descripcionMantenimientoField.getText().trim();
-            double coste = Double.parseDouble(costeMantenimientoField.getText());
+            double coste = Double.parseDouble(costeMantenimientoField.getText().replace(",", "."));
             int kmEnLaRevision = Integer.parseInt(kmMantenimientoField.getText());
 
             String errorFecha = Validacion.validarFechaMantenimiento(fechaRevision);
