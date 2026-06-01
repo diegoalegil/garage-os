@@ -86,6 +86,15 @@ public class PrincipalController {
     private Label ultimoMantenimientoLabel;
 
     @FXML
+    private Label vehiculoActivoLabel;
+
+    @FXML
+    private Label vehiculoActivoDetalleLabel;
+
+    @FXML
+    private Label proximaRevisionLabel;
+
+    @FXML
     private Label dashboardVehiculosLabel;
 
     @FXML
@@ -103,10 +112,13 @@ public class PrincipalController {
 
     private final List<Vehiculo> vehiculosCargados = new ArrayList<>();
 
+    private static final int INTERVALO_REVISION_KM = 15000;
+
     @FXML
     public void initialize() {
         propulsionCombo.getItems().addAll(TipoPropulsion.values());
         configurarPlaceholders();
+        limpiarFichaVehiculo();
         refrescarLista();
         buscarVehiculoField.textProperty().addListener((obs, oldVal, newVal) -> aplicarFiltroVehiculos());
         vehiculosList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -125,6 +137,7 @@ public class PrincipalController {
             } else {
                 mantenimientosList.getItems().clear();
                 limpiarFormularioMantenimiento();
+                limpiarFichaVehiculo();
                 actualizarResumenMantenimientos();
             }
         });
@@ -270,6 +283,7 @@ public class PrincipalController {
     private void refrescarMantenimientos(String matricula) {
         mantenimientosList.getItems().clear();
         mantenimientosList.getItems().addAll(mantenimientoService.obtenerPorMatricula(matricula));
+        actualizarFichaVehiculo(vehiculosList.getSelectionModel().getSelectedItem());
         actualizarResumenMantenimientos();
         actualizarDashboard();
     }
@@ -327,6 +341,38 @@ public class PrincipalController {
                         .thenComparing(Mantenimiento::getId))
                 .ifPresent(ultimo -> ultimoMantenimientoLabel.setText(
                         "Último: " + ultimo.getFechaRevision() + " · " + ultimo.getDescripcion()));
+    }
+
+    private void actualizarFichaVehiculo(Vehiculo vehiculo) {
+        if (vehiculo == null) {
+            limpiarFichaVehiculo();
+            return;
+        }
+
+        vehiculoActivoLabel.setText(vehiculo.getMatricula() + " · " + vehiculo.getMarca() + " " + vehiculo.getModelo());
+        vehiculoActivoDetalleLabel.setText(String.format(Locale.of("es", "ES"), "%d · %,d km · %s",
+                vehiculo.getAnio(), vehiculo.getKilometraje(), vehiculo.getTipoPropulsion()));
+        proximaRevisionLabel.setText("Próxima revisión sugerida: " + formatearKm(calcularProximaRevisionKm(vehiculo)));
+    }
+
+    private int calcularProximaRevisionKm(Vehiculo vehiculo) {
+        int kmUltimoMantenimiento = mantenimientosList.getItems().stream()
+                .mapToInt(Mantenimiento::getKmEnLaRevision)
+                .max()
+                .orElse(vehiculo.getKilometraje());
+
+        int kmReferencia = Math.max(vehiculo.getKilometraje(), kmUltimoMantenimiento);
+        return kmReferencia + INTERVALO_REVISION_KM;
+    }
+
+    private String formatearKm(int kilometros) {
+        return String.format(Locale.of("es", "ES"), "%,d km", kilometros);
+    }
+
+    private void limpiarFichaVehiculo() {
+        vehiculoActivoLabel.setText("Selecciona un vehículo");
+        vehiculoActivoDetalleLabel.setText("El historial se mostrará aquí");
+        proximaRevisionLabel.setText("Próxima revisión: --");
     }
 
     @FXML

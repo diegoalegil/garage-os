@@ -70,6 +70,31 @@
     -fx-text-fill: #1f2933;
 }
 
+.vehicle-context-card {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 6;
+    -fx-border-color: #d8dee6;
+    -fx-border-radius: 6;
+    -fx-padding: 10 12;
+}
+
+.vehicle-context-title {
+    -fx-text-fill: #1f2933;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.vehicle-context-detail {
+    -fx-text-fill: #36506b;
+    -fx-font-size: 12px;
+}
+
+.vehicle-context-hint {
+    -fx-text-fill: #6b7c8f;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
 .text-field,
 .combo-box {
     -fx-background-color: #ffffff;

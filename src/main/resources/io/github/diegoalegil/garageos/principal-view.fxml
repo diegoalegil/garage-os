@@ -79,6 +79,13 @@
             <VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="500.0" spacing="10.0" styleClass="panel">
                <children>
                   <Label styleClass="section-title" text="Mantenimientos" />
+                  <VBox alignment="CENTER_LEFT" spacing="4.0" styleClass="vehicle-context-card">
+                     <children>
+                        <Label fx:id="vehiculoActivoLabel" styleClass="vehicle-context-title" text="Selecciona un vehículo" />
+                        <Label fx:id="vehiculoActivoDetalleLabel" styleClass="vehicle-context-detail" text="El historial se mostrará aquí" />
+                        <Label fx:id="proximaRevisionLabel" styleClass="vehicle-context-hint" text="Próxima revisión: --" />
+                     </children>
+                  </VBox>
                   <Label fx:id="resumenMantenimientosLabel" styleClass="summary-label" />
                   <Label fx:id="ultimoMantenimientoLabel" styleClass="detail-label" />
                   <TextField fx:id="fechaMantenimientoField" promptText="Fecha (YYYY-MM-DD)" />
