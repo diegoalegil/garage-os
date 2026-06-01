@@ -110,6 +110,12 @@
     -fx-effect: dropshadow(gaussian, rgba(47, 128, 237, 0.22), 6, 0, 0, 0);
 }
 
+.text-field:disabled,
+.combo-box:disabled,
+.list-view:disabled {
+    -fx-opacity: 0.62;
+}
+
 .button,
 .primary-button,
 .secondary-button,
@@ -119,6 +125,10 @@
     -fx-cursor: hand;
     -fx-font-weight: bold;
     -fx-padding: 8 14;
+}
+
+.button:disabled {
+    -fx-opacity: 0.55;
 }
 
 .primary-button {

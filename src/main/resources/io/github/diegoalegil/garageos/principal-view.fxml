@@ -94,9 +94,9 @@
                   <TextField fx:id="kmMantenimientoField" promptText="Km en la revisión" />
                   <HBox alignment="CENTER" spacing="16.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#cancelarEdicionMantenimiento" prefWidth="90.0" styleClass="secondary-button" text="Cancelar" />
+                        <Button fx:id="cancelarMantenimientoButton" mnemonicParsing="false" onAction="#cancelarEdicionMantenimiento" prefWidth="90.0" styleClass="secondary-button" text="Cancelar" />
                         <Button fx:id="guardarMantenimientoButton" mnemonicParsing="false" onAction="#guardarMantenimiento" prefWidth="150.0" styleClass="primary-button" text="Guardar mant." />
-                        <Button mnemonicParsing="false" onAction="#eliminarMantenimiento" prefWidth="90.0" styleClass="danger-button" text="Eliminar" />
+                        <Button fx:id="eliminarMantenimientoButton" mnemonicParsing="false" onAction="#eliminarMantenimiento" prefWidth="90.0" styleClass="danger-button" text="Eliminar" />
                      </children>
                   </HBox>
                   <ListView fx:id="mantenimientosList" prefHeight="315.0" prefWidth="200.0" />

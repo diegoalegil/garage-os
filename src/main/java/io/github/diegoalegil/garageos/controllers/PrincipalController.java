@@ -74,6 +74,12 @@ public class PrincipalController {
     private Button guardarMantenimientoButton;
 
     @FXML
+    private Button cancelarMantenimientoButton;
+
+    @FXML
+    private Button eliminarMantenimientoButton;
+
+    @FXML
     private ListView<Mantenimiento> mantenimientosList;
 
     @FXML
@@ -119,6 +125,7 @@ public class PrincipalController {
         propulsionCombo.getItems().addAll(TipoPropulsion.values());
         configurarPlaceholders();
         limpiarFichaVehiculo();
+        configurarEstadoFormularioMantenimiento(false);
         refrescarLista();
         buscarVehiculoField.textProperty().addListener((obs, oldVal, newVal) -> aplicarFiltroVehiculos());
         vehiculosList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -134,10 +141,12 @@ public class PrincipalController {
                 refrescarMantenimientos(newVal.getMatricula());
                 limpiarFormularioMantenimiento();
                 prepararNuevoMantenimiento();
+                configurarEstadoFormularioMantenimiento(true);
             } else {
                 mantenimientosList.getItems().clear();
                 limpiarFormularioMantenimiento();
                 limpiarFichaVehiculo();
+                configurarEstadoFormularioMantenimiento(false);
                 actualizarResumenMantenimientos();
             }
         });
@@ -149,6 +158,9 @@ public class PrincipalController {
                 costeMantenimientoField.setText(String.valueOf(newVal.getCoste()));
                 kmMantenimientoField.setText(String.valueOf(newVal.getKmEnLaRevision()));
                 guardarMantenimientoButton.setText("Actualizar mant.");
+                eliminarMantenimientoButton.setDisable(false);
+            } else {
+                eliminarMantenimientoButton.setDisable(true);
             }
         });
         actualizarResumenMantenimientos();
@@ -373,6 +385,17 @@ public class PrincipalController {
         vehiculoActivoLabel.setText("Selecciona un vehículo");
         vehiculoActivoDetalleLabel.setText("El historial se mostrará aquí");
         proximaRevisionLabel.setText("Próxima revisión: --");
+    }
+
+    private void configurarEstadoFormularioMantenimiento(boolean hayVehiculoSeleccionado) {
+        fechaMantenimientoField.setDisable(!hayVehiculoSeleccionado);
+        descripcionMantenimientoField.setDisable(!hayVehiculoSeleccionado);
+        costeMantenimientoField.setDisable(!hayVehiculoSeleccionado);
+        kmMantenimientoField.setDisable(!hayVehiculoSeleccionado);
+        guardarMantenimientoButton.setDisable(!hayVehiculoSeleccionado);
+        cancelarMantenimientoButton.setDisable(!hayVehiculoSeleccionado);
+        mantenimientosList.setDisable(!hayVehiculoSeleccionado);
+        eliminarMantenimientoButton.setDisable(true);
     }
 
     @FXML
