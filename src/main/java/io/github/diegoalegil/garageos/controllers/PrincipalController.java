@@ -1,7 +1,6 @@
 package io.github.diegoalegil.garageos.controllers;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -19,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -65,7 +65,7 @@ public class PrincipalController {
     private ListView<Vehiculo> vehiculosList;
 
     @FXML
-    private TextField fechaMantenimientoField;
+    private DatePicker fechaMantenimientoPicker;
 
     @FXML
     private TextField descripcionMantenimientoField;
@@ -161,7 +161,7 @@ public class PrincipalController {
 
         mantenimientosList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
-                fechaMantenimientoField.setText(newVal.getFechaRevision().toString());
+                fechaMantenimientoPicker.setValue(newVal.getFechaRevision());
                 descripcionMantenimientoField.setText(newVal.getDescripcion());
                 costeMantenimientoField.setText(String.valueOf(newVal.getCoste()));
                 kmMantenimientoField.setText(String.valueOf(newVal.getKmEnLaRevision()));
@@ -396,7 +396,7 @@ public class PrincipalController {
     }
 
     private void configurarEstadoFormularioMantenimiento(boolean hayVehiculoSeleccionado) {
-        fechaMantenimientoField.setDisable(!hayVehiculoSeleccionado);
+        fechaMantenimientoPicker.setDisable(!hayVehiculoSeleccionado);
         descripcionMantenimientoField.setDisable(!hayVehiculoSeleccionado);
         costeMantenimientoField.setDisable(!hayVehiculoSeleccionado);
         kmMantenimientoField.setDisable(!hayVehiculoSeleccionado);
@@ -470,7 +470,7 @@ public class PrincipalController {
         }
 
         try {
-            LocalDate fechaRevision = LocalDate.parse(fechaMantenimientoField.getText());
+            LocalDate fechaRevision = fechaMantenimientoPicker.getValue();
             String descripcion = descripcionMantenimientoField.getText().trim();
             double coste = Double.parseDouble(costeMantenimientoField.getText());
             int kmEnLaRevision = Integer.parseInt(kmMantenimientoField.getText());
@@ -528,15 +528,13 @@ public class PrincipalController {
             limpiarFormularioMantenimiento();
             prepararNuevoMantenimiento();
 
-        } catch (DateTimeParseException e) {
-            resultadoMantenimientoLabel.setText("Fecha inválida. Usa YYYY-MM-DD");
         } catch (NumberFormatException e) {
             resultadoMantenimientoLabel.setText("Coste y km deben ser números");
         }
     }
 
     private void limpiarFormularioMantenimiento() {
-        fechaMantenimientoField.clear();
+        fechaMantenimientoPicker.setValue(null);
         descripcionMantenimientoField.clear();
         costeMantenimientoField.clear();
         kmMantenimientoField.clear();
@@ -546,7 +544,7 @@ public class PrincipalController {
 
     private void prepararNuevoMantenimiento() {
         if (vehiculosList.getSelectionModel().getSelectedItem() != null) {
-            fechaMantenimientoField.setText(LocalDate.now().toString());
+            fechaMantenimientoPicker.setValue(LocalDate.now());
         }
     }
 
