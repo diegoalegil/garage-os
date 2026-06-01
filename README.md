@@ -1,10 +1,12 @@
 # GarageOS
 
+[![Java CI](https://github.com/diegoalegil/garage-os/actions/workflows/maven-test.yml/badge.svg)](https://github.com/diegoalegil/garage-os/actions/workflows/maven-test.yml)
+
 ![GarageOS banner](img/banner2.webp)
 
 GarageOS es una aplicación de escritorio para llevar el control básico de una pequeña flota de vehículos: altas, edición, búsqueda, mantenimientos, costes e historial por matrícula.
 
-El proyecto está hecho con JavaFX, FXML y SQLite. La idea no era solo tener un CRUD funcionando, sino montar una aplicación de escritorio presentable, con persistencia real, validaciones, interfaz cuidada y una estructura que se pueda explicar sin tener que esconder medio código debajo de la alfombra.
+El proyecto está hecho con JavaFX, FXML y SQLite. La idea no era solo tener un CRUD funcionando, sino montar una aplicación de escritorio presentable, con persistencia real, validaciones, interfaz cuidada y una estructura que se pueda explicar con claridad.
 
 ![Interfaz principal de GarageOS](img/interfaz.webp)
 
@@ -31,9 +33,9 @@ El proyecto está hecho con JavaFX, FXML y SQLite. La idea no era solo tener un 
 
 ## Estado actual
 
-La aplicación ya tiene el flujo principal montado: vehículos, mantenimientos, base de datos, validaciones, estilos y pruebas unitarias.
+La versión `1.0.0` deja cerrado el flujo principal: vehículos, mantenimientos, base de datos, validaciones, estilos, pruebas unitarias y CI en GitHub Actions.
 
-Todavía quedan mejoras posibles, sobre todo en la parte de producto: empaquetado final, más cobertura de tests, exportación de datos, recordatorios reales o estadísticas más completas. Aun así, el proyecto ya es ejecutable y usable como aplicación de escritorio.
+Todavía quedan mejoras posibles, sobre todo en la parte de producto: empaquetado instalable, exportación de datos, recordatorios reales o estadísticas más completas. Aun así, el proyecto ya es ejecutable y usable como aplicación de escritorio.
 
 ## Tecnologías
 
@@ -44,6 +46,7 @@ Todavía quedan mejoras posibles, sobre todo en la parte de producto: empaquetad
 - SQLite
 - Maven
 - JUnit 5
+- GitHub Actions
 
 ## Estructura
 
@@ -111,8 +114,11 @@ Ahora mismo hay tests para:
 - Validaciones de vehículos y mantenimientos.
 - Formato de salida de modelos.
 - Repositorio en memoria de vehículos.
+- Servicios de vehículos y mantenimientos.
 
-Última comprobación local: 20 tests en verde.
+Última comprobación local: 24 tests en verde.
+
+El repositorio también ejecuta los tests automáticamente con GitHub Actions en cada push a `main`.
 
 ## Decisiones del proyecto
 
@@ -165,7 +171,7 @@ Las imágenes del proyecto están en `img/` y se usan principalmente para docume
 ## Próximos pasos
 
 - Mejorar el empaquetado para ejecutar la app de forma más cómoda.
-- Añadir más pruebas sobre servicios y repositorios SQLite.
+- Añadir más pruebas sobre repositorios SQLite.
 - Preparar capturas finales para la entrega.
 - Añadir estadísticas reales a partir de los mantenimientos.
 - Estudiar un sistema de recordatorios de próxima revisión.
