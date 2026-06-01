@@ -107,9 +107,11 @@
     -fx-font-weight: bold;
 }
 
-.empty-state {
-    -fx-alignment: center;
-    -fx-padding: 16;
+.detail-label {
+    -fx-text-fill: #243447;
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
 }
 
 .empty-state-label {

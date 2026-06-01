@@ -14,13 +14,13 @@ public class PrincipalApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 PrincipalApplication.class.getResource("principal-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 650);
+        Scene scene = new Scene(fxmlLoader.load(), 1120, 760);
         scene.getStylesheets().add(PrincipalApplication.class.getResource("styles.css").toExternalForm());
 
         stage.setTitle("GarageOS");
         stage.getIcons().add(new Image(PrincipalApplication.class.getResourceAsStream("assets/app-icon.png")));
-        stage.setMinWidth(1000);
-        stage.setMinHeight(650);
+        stage.setMinWidth(1120);
+        stage.setMinHeight(760);
         stage.setScene(scene);
         stage.show();
     }

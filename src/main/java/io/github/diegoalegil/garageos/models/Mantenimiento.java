@@ -1,6 +1,7 @@
 package io.github.diegoalegil.garageos.models;
 
 import java.time.LocalDate;
+import java.util.Locale;
 
 public class Mantenimiento {
 
@@ -98,7 +99,8 @@ public class Mantenimiento {
 
     @Override
     public String toString() {
-        return fechaRevision + " - " + descripcion + " - " + coste + " € - " + kmEnLaRevision + " km";
+        return String.format(Locale.of("es", "ES"), "%s · %s · %.2f € · %,d km",
+                fechaRevision, descripcion, coste, kmEnLaRevision);
     }
 
 }

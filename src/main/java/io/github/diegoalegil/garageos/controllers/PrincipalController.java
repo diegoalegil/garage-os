@@ -3,6 +3,7 @@ package io.github.diegoalegil.garageos.controllers;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -21,9 +22,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 
 public class PrincipalController {
 
@@ -84,6 +82,9 @@ public class PrincipalController {
     @FXML
     private Label resumenMantenimientosLabel;
 
+    @FXML
+    private Label ultimoMantenimientoLabel;
+
     private final VehiculoService servicio = new VehiculoService();
 
     private final MantenimientoService mantenimientoService = new MantenimientoService();
@@ -129,20 +130,13 @@ public class PrincipalController {
     }
 
     private void configurarPlaceholders() {
-        vehiculosList.setPlaceholder(new Label("No hay vehículos registrados"));
+        Label vehiculosPlaceholder = new Label("No hay vehículos registrados");
+        vehiculosPlaceholder.getStyleClass().add("empty-state-label");
+        vehiculosList.setPlaceholder(vehiculosPlaceholder);
 
-        ImageView imagen = new ImageView(new Image(getClass().getResourceAsStream(
-                "/io/github/diegoalegil/garageos/assets/empty-maintenance.png")));
-        imagen.setFitWidth(150);
-        imagen.setPreserveRatio(true);
-
-        Label texto = new Label("Selecciona un vehículo o añade su primer mantenimiento");
-        texto.getStyleClass().add("empty-state-label");
-
-        VBox placeholder = new VBox(10, imagen, texto);
-        placeholder.getStyleClass().add("empty-state");
-
-        mantenimientosList.setPlaceholder(placeholder);
+        Label mantenimientosPlaceholder = new Label("Selecciona un vehículo o añade su primer mantenimiento");
+        mantenimientosPlaceholder.getStyleClass().add("empty-state-label");
+        mantenimientosList.setPlaceholder(mantenimientosPlaceholder);
     }
 
     @FXML
@@ -264,13 +258,33 @@ public class PrincipalController {
 
         if (vehiculoSeleccionado == null) {
             resumenMantenimientosLabel.setText("Selecciona un vehículo");
+            ultimoMantenimientoLabel.setText("");
         } else if (total == 0) {
             resumenMantenimientosLabel.setText("Sin mantenimientos registrados");
+            ultimoMantenimientoLabel.setText("Aún no hay historial para este vehículo");
         } else if (total == 1) {
-            resumenMantenimientosLabel.setText("1 mantenimiento registrado");
+            resumenMantenimientosLabel.setText("1 mantenimiento · " + formatearCosteTotalMantenimientos());
+            actualizarUltimoMantenimiento();
         } else {
-            resumenMantenimientosLabel.setText(total + " mantenimientos registrados");
+            resumenMantenimientosLabel.setText(total + " mantenimientos · " + formatearCosteTotalMantenimientos());
+            actualizarUltimoMantenimiento();
         }
+    }
+
+    private String formatearCosteTotalMantenimientos() {
+        double costeTotal = mantenimientosList.getItems().stream()
+                .mapToDouble(Mantenimiento::getCoste)
+                .sum();
+
+        return String.format(Locale.of("es", "ES"), "%.2f € invertidos", costeTotal);
+    }
+
+    private void actualizarUltimoMantenimiento() {
+        mantenimientosList.getItems().stream()
+                .max(Comparator.comparing(Mantenimiento::getFechaRevision)
+                        .thenComparing(Mantenimiento::getId))
+                .ifPresent(ultimo -> ultimoMantenimientoLabel.setText(
+                        "Último: " + ultimo.getFechaRevision() + " · " + ultimo.getDescripcion()));
     }
 
     @FXML

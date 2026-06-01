@@ -1,5 +1,7 @@
 package io.github.diegoalegil.garageos.models;
 
+import java.util.Locale;
+
 public class Vehiculo {
 
     private final String matricula;
@@ -94,8 +96,8 @@ public class Vehiculo {
 
     @Override
     public String toString() {
-        return matricula + " - " + marca + " " + modelo + " (" + anio + ") - " + kilometraje + " km - "
-                + tipoPropulsion;
+        return String.format(Locale.of("es", "ES"), "%s · %s %s (%d) · %,d km · %s",
+                matricula, marca, modelo, anio, kilometraje, tipoPropulsion);
     }
 
 }
