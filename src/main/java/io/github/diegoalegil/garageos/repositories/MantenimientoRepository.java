@@ -7,15 +7,15 @@ import io.github.diegoalegil.garageos.models.Mantenimiento;
 
 public interface MantenimientoRepository {
 
-    boolean guardar(Mantenimiento mantenimiento); // INSERT
+    boolean guardar(Mantenimiento mantenimiento);
 
-    List<Mantenimiento> obtenerTodos(); // SELECT all
+    List<Mantenimiento> obtenerTodos();
 
-    List<Mantenimiento> obtenerPorMatricula(String matricula); // SELECT WHERE
+    List<Mantenimiento> obtenerPorMatricula(String matricula);
 
-    Optional<Mantenimiento> buscarPorId(int id); // SELECT por id
+    Optional<Mantenimiento> buscarPorId(int id);
 
-    boolean actualizar(Mantenimiento mantenimiento); // UPDATE
+    boolean actualizar(Mantenimiento mantenimiento);
 
     boolean eliminar(int id);
 
