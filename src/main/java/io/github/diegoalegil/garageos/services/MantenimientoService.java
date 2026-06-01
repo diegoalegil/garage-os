@@ -15,8 +15,8 @@ public class MantenimientoService {
         this.repository = new MantenimientoSqliteRepository();
     }
 
-    public void guardarMantenimiento(Mantenimiento mantenimiento) {
-        repository.guardar(mantenimiento);
+    public boolean guardarMantenimiento(Mantenimiento mantenimiento) {
+        return repository.guardar(mantenimiento);
     }
 
     public List<Mantenimiento> obtenerPorMatricula(String matricula) {

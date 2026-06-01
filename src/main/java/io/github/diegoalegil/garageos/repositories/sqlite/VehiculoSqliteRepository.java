@@ -36,7 +36,7 @@ public class VehiculoSqliteRepository extends SQLiteConnectionManager implements
     }
 
     @Override
-    public void guardar(Vehiculo vehiculo) {
+    public boolean guardar(Vehiculo vehiculo) {
         try (Connection connection = this.getConnection();
                 PreparedStatement sentencia = connection.prepareStatement(
                         "INSERT INTO vehiculos (matricula, marca, modelo, anio, kilometraje, tipo_propulsion) VALUES (?,?,?,?,?,?)")) {
@@ -49,8 +49,10 @@ public class VehiculoSqliteRepository extends SQLiteConnectionManager implements
             sentencia.setString(6, vehiculo.getTipoPropulsion().name());
 
             sentencia.executeUpdate();
+            return true;
         } catch (Exception e) {
             System.err.println("Error guardando vehículo " + e);
+            return false;
         }
     }
 

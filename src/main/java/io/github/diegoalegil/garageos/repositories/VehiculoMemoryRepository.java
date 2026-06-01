@@ -11,9 +11,12 @@ public class VehiculoMemoryRepository implements VehiculoRepository {
     List<Vehiculo> vehiculos = new ArrayList<>();
 
     @Override
-    public void guardar(Vehiculo vehiculo) {
-
+    public boolean guardar(Vehiculo vehiculo) {
+        if (vehiculos.contains(vehiculo)) {
+            return false;
+        }
         vehiculos.add(vehiculo);
+        return true;
     }
 
     @Override

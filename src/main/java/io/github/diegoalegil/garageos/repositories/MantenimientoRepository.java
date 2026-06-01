@@ -7,7 +7,7 @@ import io.github.diegoalegil.garageos.models.Mantenimiento;
 
 public interface MantenimientoRepository {
 
-    void guardar(Mantenimiento mantenimiento); // INSERT
+    boolean guardar(Mantenimiento mantenimiento); // INSERT
 
     List<Mantenimiento> obtenerPorMatricula(String matricula); // SELECT WHERE
 

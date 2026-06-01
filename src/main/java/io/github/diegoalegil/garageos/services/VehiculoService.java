@@ -19,8 +19,8 @@ public class VehiculoService {
         this.mantenimientoRepository = new MantenimientoSqliteRepository();
     }
 
-    public void guardarVehiculo(Vehiculo vehiculo) {
-        repository.guardar(vehiculo);
+    public boolean guardarVehiculo(Vehiculo vehiculo) {
+        return repository.guardar(vehiculo);
     }
 
     public List<Vehiculo> obtenerTodos() {

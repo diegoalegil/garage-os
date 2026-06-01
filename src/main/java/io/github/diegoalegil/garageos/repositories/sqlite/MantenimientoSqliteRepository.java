@@ -37,7 +37,7 @@ public class MantenimientoSqliteRepository extends SQLiteConnectionManager imple
     }
 
     @Override
-    public void guardar(Mantenimiento mantenimiento) {
+    public boolean guardar(Mantenimiento mantenimiento) {
 
         try (Connection connection = this.getConnection();
                 PreparedStatement sentencia = connection.prepareStatement(
@@ -50,9 +50,11 @@ public class MantenimientoSqliteRepository extends SQLiteConnectionManager imple
             sentencia.setInt(5, mantenimiento.getKmEnLaRevision());
 
             sentencia.executeUpdate();
+            return true;
 
         } catch (Exception e) {
             System.err.println("Error guardando el mantenimiento" + e);
+            return false;
         }
     }
 

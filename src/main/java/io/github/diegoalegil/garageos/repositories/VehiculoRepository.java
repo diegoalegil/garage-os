@@ -7,7 +7,7 @@ import io.github.diegoalegil.garageos.models.Vehiculo;
 
 public interface VehiculoRepository {
 
-    void guardar(Vehiculo vehiculo);
+    boolean guardar(Vehiculo vehiculo);
 
     List<Vehiculo> obtenerTodos();
 

@@ -189,11 +189,19 @@ public class PrincipalController {
 
             if (matriculaField.isDisabled()) {
                 // Modo edición: actualizar
-                servicio.actualizarVehiculo(vehiculo);
+                boolean actualizado = servicio.actualizarVehiculo(vehiculo);
+                if (!actualizado) {
+                    resultadoLabel.setText("No se pudo actualizar el vehículo");
+                    return;
+                }
                 resultadoLabel.setText("Actualizado: " + vehiculo);
             } else {
                 // Modo creación: guardar
-                servicio.guardarVehiculo(vehiculo);
+                boolean guardado = servicio.guardarVehiculo(vehiculo);
+                if (!guardado) {
+                    resultadoLabel.setText("No se pudo guardar. Revisa si la matrícula ya existe");
+                    return;
+                }
                 resultadoLabel.setText("Guardado: " + vehiculo);
             }
 
@@ -385,7 +393,11 @@ public class PrincipalController {
                 }
                 resultadoMantenimientoLabel.setText("Mantenimiento actualizado");
             } else {
-                mantenimientoService.guardarMantenimiento(mantenimiento);
+                boolean guardado = mantenimientoService.guardarMantenimiento(mantenimiento);
+                if (!guardado) {
+                    resultadoMantenimientoLabel.setText("No se pudo guardar el mantenimiento");
+                    return;
+                }
                 resultadoMantenimientoLabel.setText("Mantenimiento guardado");
             }
 
