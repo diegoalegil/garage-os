@@ -101,6 +101,12 @@
     -fx-font-weight: bold;
 }
 
+.summary-label {
+    -fx-text-fill: #6b7c8f;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
 .empty-state {
     -fx-alignment: center;
     -fx-padding: 16;

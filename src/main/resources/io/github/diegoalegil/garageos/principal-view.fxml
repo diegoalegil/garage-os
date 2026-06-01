@@ -27,6 +27,7 @@
             <VBox alignment="TOP_CENTER" prefHeight="540.0" prefWidth="480.0" spacing="14.0" styleClass="panel">
                <children>
                   <Label styleClass="section-title" text="Vehículos" />
+                  <TextField fx:id="buscarVehiculoField" promptText="Buscar por matrícula, marca, modelo o propulsión" />
                   <TextField fx:id="matriculaField" promptText="Matrícula" />
                   <TextField fx:id="marcaField" promptText="Marca" />
                   <TextField fx:id="modeloField" promptText="Modelo" />
@@ -41,12 +42,14 @@
                      </children>
                   </HBox>
                   <Label fx:id="resultadoLabel" styleClass="status-label" />
-                  <ListView fx:id="vehiculosList" prefHeight="170.0" prefWidth="200.0" />
+                  <Label fx:id="resumenVehiculosLabel" styleClass="summary-label" />
+                  <ListView fx:id="vehiculosList" prefHeight="130.0" prefWidth="200.0" />
                </children>
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="540.0" prefWidth="420.0" spacing="14.0" styleClass="panel">
                <children>
                   <Label styleClass="section-title" text="Mantenimientos" />
+                  <Label fx:id="resumenMantenimientosLabel" styleClass="summary-label" />
                   <TextField fx:id="fechaMantenimientoField" promptText="Fecha (YYYY-MM-DD)" />
                   <TextField fx:id="descripcionMantenimientoField" promptText="Descripción" />
                   <TextField fx:id="costeMantenimientoField" promptText="Coste" />

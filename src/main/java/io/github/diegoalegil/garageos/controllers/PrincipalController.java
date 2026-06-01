@@ -2,6 +2,9 @@ package io.github.diegoalegil.garageos.controllers;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import io.github.diegoalegil.garageos.models.Mantenimiento;
@@ -28,6 +31,9 @@ public class PrincipalController {
     private TextField matriculaField;
 
     @FXML
+    private TextField buscarVehiculoField;
+
+    @FXML
     private TextField marcaField;
 
     @FXML
@@ -44,6 +50,9 @@ public class PrincipalController {
 
     @FXML
     private Label resultadoLabel;
+
+    @FXML
+    private Label resumenVehiculosLabel;
 
     @FXML
     private Button accionButton;
@@ -72,15 +81,21 @@ public class PrincipalController {
     @FXML
     private Label resultadoMantenimientoLabel;
 
+    @FXML
+    private Label resumenMantenimientosLabel;
+
     private final VehiculoService servicio = new VehiculoService();
 
     private final MantenimientoService mantenimientoService = new MantenimientoService();
+
+    private final List<Vehiculo> vehiculosCargados = new ArrayList<>();
 
     @FXML
     public void initialize() {
         propulsionCombo.getItems().addAll(TipoPropulsion.values());
         configurarPlaceholders();
         refrescarLista();
+        buscarVehiculoField.textProperty().addListener((obs, oldVal, newVal) -> aplicarFiltroVehiculos());
         vehiculosList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 matriculaField.setText(newVal.getMatricula());
@@ -93,6 +108,11 @@ public class PrincipalController {
                 accionButton.setText("Actualizar");
                 refrescarMantenimientos(newVal.getMatricula());
                 limpiarFormularioMantenimiento();
+                prepararNuevoMantenimiento();
+            } else {
+                mantenimientosList.getItems().clear();
+                limpiarFormularioMantenimiento();
+                actualizarResumenMantenimientos();
             }
         });
 
@@ -102,9 +122,10 @@ public class PrincipalController {
                 descripcionMantenimientoField.setText(newVal.getDescripcion());
                 costeMantenimientoField.setText(String.valueOf(newVal.getCoste()));
                 kmMantenimientoField.setText(String.valueOf(newVal.getKmEnLaRevision()));
-                guardarMantenimientoButton.setText("Actualizar mantenimiento");
+                guardarMantenimientoButton.setText("Actualizar mant.");
             }
         });
+        actualizarResumenMantenimientos();
     }
 
     private void configurarPlaceholders() {
@@ -191,15 +212,65 @@ public class PrincipalController {
     }
 
     private void refrescarLista() {
+        vehiculosCargados.clear();
+        vehiculosCargados.addAll(servicio.obtenerTodos());
+        aplicarFiltroVehiculos();
+    }
 
+    private void aplicarFiltroVehiculos() {
+        String filtro = buscarVehiculoField.getText().trim().toLowerCase(Locale.ROOT);
         vehiculosList.getItems().clear();
 
-        vehiculosList.getItems().addAll(servicio.obtenerTodos());
+        if (filtro.isEmpty()) {
+            vehiculosList.getItems().addAll(vehiculosCargados);
+        } else {
+            vehiculosList.getItems().addAll(vehiculosCargados.stream()
+                    .filter(vehiculo -> coincideConFiltro(vehiculo, filtro))
+                    .toList());
+        }
+
+        actualizarResumenVehiculos();
+    }
+
+    private boolean coincideConFiltro(Vehiculo vehiculo, String filtro) {
+        return vehiculo.getMatricula().toLowerCase(Locale.ROOT).contains(filtro)
+                || vehiculo.getMarca().toLowerCase(Locale.ROOT).contains(filtro)
+                || vehiculo.getModelo().toLowerCase(Locale.ROOT).contains(filtro)
+                || vehiculo.getTipoPropulsion().name().toLowerCase(Locale.ROOT).contains(filtro);
+    }
+
+    private void actualizarResumenVehiculos() {
+        int visibles = vehiculosList.getItems().size();
+        int total = vehiculosCargados.size();
+
+        if (total == 0) {
+            resumenVehiculosLabel.setText("Sin vehículos registrados");
+        } else if (visibles == total) {
+            resumenVehiculosLabel.setText(total + " vehículos registrados");
+        } else {
+            resumenVehiculosLabel.setText(visibles + " de " + total + " vehículos");
+        }
     }
 
     private void refrescarMantenimientos(String matricula) {
         mantenimientosList.getItems().clear();
         mantenimientosList.getItems().addAll(mantenimientoService.obtenerPorMatricula(matricula));
+        actualizarResumenMantenimientos();
+    }
+
+    private void actualizarResumenMantenimientos() {
+        Vehiculo vehiculoSeleccionado = vehiculosList.getSelectionModel().getSelectedItem();
+        int total = mantenimientosList.getItems().size();
+
+        if (vehiculoSeleccionado == null) {
+            resumenMantenimientosLabel.setText("Selecciona un vehículo");
+        } else if (total == 0) {
+            resumenMantenimientosLabel.setText("Sin mantenimientos registrados");
+        } else if (total == 1) {
+            resumenMantenimientosLabel.setText("1 mantenimiento registrado");
+        } else {
+            resumenMantenimientosLabel.setText(total + " mantenimientos registrados");
+        }
     }
 
     @FXML
@@ -215,6 +286,7 @@ public class PrincipalController {
         vehiculosList.getSelectionModel().clearSelection();
         mantenimientosList.getItems().clear();
         limpiarFormularioMantenimiento();
+        actualizarResumenMantenimientos();
     }
 
     @FXML
@@ -305,6 +377,7 @@ public class PrincipalController {
 
             refrescarMantenimientos(seleccionado.getMatricula());
             limpiarFormularioMantenimiento();
+            prepararNuevoMantenimiento();
 
         } catch (DateTimeParseException e) {
             resultadoMantenimientoLabel.setText("Fecha inválida. Usa YYYY-MM-DD");
@@ -319,12 +392,19 @@ public class PrincipalController {
         costeMantenimientoField.clear();
         kmMantenimientoField.clear();
         mantenimientosList.getSelectionModel().clearSelection();
-        guardarMantenimientoButton.setText("Guardar mantenimiento");
+        guardarMantenimientoButton.setText("Guardar mant.");
+    }
+
+    private void prepararNuevoMantenimiento() {
+        if (vehiculosList.getSelectionModel().getSelectedItem() != null) {
+            fechaMantenimientoField.setText(LocalDate.now().toString());
+        }
     }
 
     @FXML
     private void cancelarEdicionMantenimiento() {
         limpiarFormularioMantenimiento();
+        prepararNuevoMantenimiento();
         resultadoMantenimientoLabel.setText("");
     }
 
@@ -355,6 +435,7 @@ public class PrincipalController {
                 resultadoMantenimientoLabel.setText("Mantenimiento eliminado");
                 refrescarMantenimientos(vehiculoSeleccionado.getMatricula());
                 limpiarFormularioMantenimiento();
+                prepararNuevoMantenimiento();
             } else {
                 resultadoMantenimientoLabel.setText("No se pudo eliminar el mantenimiento");
             }
