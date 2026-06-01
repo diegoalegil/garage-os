@@ -216,76 +216,73 @@ public class PrincipalController {
 
     @FXML
     private void guardarVehiculo() {
-        try {
-            String matricula = matriculaField.getText().trim().toUpperCase(Locale.ROOT);
-            String marca = marcaField.getText().trim();
-            String modelo = modeloField.getText().trim();
-            int anio = Integer.parseInt(anioField.getText());
-            int kilometraje = Integer.parseInt(kilometrajeField.getText());
-            TipoPropulsion propulsion = propulsionCombo.getValue();
+        String matricula = matriculaField.getText().trim().toUpperCase(Locale.ROOT);
+        String marca = marcaField.getText().trim();
+        String modelo = modeloField.getText().trim();
+        Integer anio = leerEntero(anioField.getText(), "El año", resultadoLabel);
+        Integer kilometraje = leerEntero(kilometrajeField.getText(), "El kilometraje", resultadoLabel);
+        TipoPropulsion propulsion = propulsionCombo.getValue();
 
-            String errorMatricula = Validacion.validarMatricula(matricula);
-            if (!errorMatricula.isEmpty()) {
-                resultadoLabel.setText(errorMatricula);
-                return;
-            }
-
-            String errorMarca = Validacion.validarMarca(marca);
-            if (!errorMarca.isEmpty()) {
-                resultadoLabel.setText(errorMarca);
-                return;
-            }
-
-            String errorModelo = Validacion.validarModelo(modelo);
-            if (!errorModelo.isEmpty()) {
-                resultadoLabel.setText(errorModelo);
-                return;
-            }
-
-            String errorAnio = Validacion.validarAnio(anio);
-            if (!errorAnio.isEmpty()) {
-                resultadoLabel.setText(errorAnio);
-                return;
-            }
-
-            String errorKilometraje = Validacion.validarKilometraje(kilometraje);
-            if (!errorKilometraje.isEmpty()) {
-                resultadoLabel.setText(errorKilometraje);
-                return;
-            }
-
-            String errorPropulsion = Validacion.validarPropulsion(propulsion);
-            if (!errorPropulsion.isEmpty()) {
-                resultadoLabel.setText(errorPropulsion);
-                return;
-            }
-
-            Vehiculo vehiculo = new Vehiculo(matricula, marca, modelo, anio, kilometraje, propulsion);
-
-            if (matriculaField.isDisabled()) {
-                // Modo edición: actualizar
-                boolean actualizado = servicio.actualizarVehiculo(vehiculo);
-                if (!actualizado) {
-                    resultadoLabel.setText("No se pudo actualizar el vehículo");
-                    return;
-                }
-                resultadoLabel.setText("Actualizado: " + vehiculo);
-            } else {
-                // Modo creación: guardar
-                boolean guardado = servicio.guardarVehiculo(vehiculo);
-                if (!guardado) {
-                    resultadoLabel.setText("No se pudo guardar. Revisa si la matrícula ya existe");
-                    return;
-                }
-                resultadoLabel.setText("Guardado: " + vehiculo);
-            }
-
-            refrescarLista();
-            cancelarEdicion();
-
-        } catch (NumberFormatException e) {
-            resultadoLabel.setText("Error: año y kilometraje deben ser números");
+        if (anio == null || kilometraje == null) {
+            return;
         }
+
+        String errorMatricula = Validacion.validarMatricula(matricula);
+        if (!errorMatricula.isEmpty()) {
+            resultadoLabel.setText(errorMatricula);
+            return;
+        }
+
+        String errorMarca = Validacion.validarMarca(marca);
+        if (!errorMarca.isEmpty()) {
+            resultadoLabel.setText(errorMarca);
+            return;
+        }
+
+        String errorModelo = Validacion.validarModelo(modelo);
+        if (!errorModelo.isEmpty()) {
+            resultadoLabel.setText(errorModelo);
+            return;
+        }
+
+        String errorAnio = Validacion.validarAnio(anio);
+        if (!errorAnio.isEmpty()) {
+            resultadoLabel.setText(errorAnio);
+            return;
+        }
+
+        String errorKilometraje = Validacion.validarKilometraje(kilometraje);
+        if (!errorKilometraje.isEmpty()) {
+            resultadoLabel.setText(errorKilometraje);
+            return;
+        }
+
+        String errorPropulsion = Validacion.validarPropulsion(propulsion);
+        if (!errorPropulsion.isEmpty()) {
+            resultadoLabel.setText(errorPropulsion);
+            return;
+        }
+
+        Vehiculo vehiculo = new Vehiculo(matricula, marca, modelo, anio, kilometraje, propulsion);
+
+        if (matriculaField.isDisabled()) {
+            boolean actualizado = servicio.actualizarVehiculo(vehiculo);
+            if (!actualizado) {
+                resultadoLabel.setText("No se pudo actualizar el vehículo");
+                return;
+            }
+            resultadoLabel.setText("Actualizado: " + vehiculo);
+        } else {
+            boolean guardado = servicio.guardarVehiculo(vehiculo);
+            if (!guardado) {
+                resultadoLabel.setText("No se pudo guardar. Revisa si la matrícula ya existe");
+                return;
+            }
+            resultadoLabel.setText("Guardado: " + vehiculo);
+        }
+
+        refrescarLista();
+        cancelarEdicion();
     }
 
     private void refrescarLista() {
@@ -499,67 +496,95 @@ public class PrincipalController {
             return;
         }
 
+        LocalDate fechaRevision = fechaMantenimientoPicker.getValue();
+        String descripcion = descripcionMantenimientoField.getText().trim();
+        Double coste = leerDecimal(costeMantenimientoField.getText(), "El coste", resultadoMantenimientoLabel);
+        Integer kmEnLaRevision = leerEntero(kmMantenimientoField.getText(), "Los km de la revisión",
+                resultadoMantenimientoLabel);
+
+        if (coste == null || kmEnLaRevision == null) {
+            return;
+        }
+
+        String errorFecha = Validacion.validarFechaMantenimiento(fechaRevision);
+        if (!errorFecha.isEmpty()) {
+            resultadoMantenimientoLabel.setText(errorFecha);
+            return;
+        }
+
+        String errorDescripcion = Validacion.validarDescripcionMantenimiento(descripcion);
+        if (!errorDescripcion.isEmpty()) {
+            resultadoMantenimientoLabel.setText(errorDescripcion);
+            return;
+        }
+
+        String errorCoste = Validacion.validarCosteMantenimiento(coste);
+        if (!errorCoste.isEmpty()) {
+            resultadoMantenimientoLabel.setText(errorCoste);
+            return;
+        }
+
+        String errorKm = Validacion.validarKmMantenimiento(kmEnLaRevision, seleccionado.getKilometraje());
+        if (!errorKm.isEmpty()) {
+            resultadoMantenimientoLabel.setText(errorKm);
+            return;
+        }
+
+        Mantenimiento mantenimiento = new Mantenimiento(
+                seleccionado.getMatricula(),
+                fechaRevision,
+                descripcion,
+                coste,
+                kmEnLaRevision);
+
+        Mantenimiento mantenimientoSeleccionado = mantenimientosList.getSelectionModel().getSelectedItem();
+        if (mantenimientoSeleccionado != null) {
+            mantenimiento.setId(mantenimientoSeleccionado.getId());
+            boolean actualizado = mantenimientoService.actualizarMantenimiento(mantenimiento);
+            if (!actualizado) {
+                resultadoMantenimientoLabel.setText("No se pudo actualizar el mantenimiento");
+                return;
+            }
+            resultadoMantenimientoLabel.setText("Mantenimiento actualizado");
+        } else {
+            boolean guardado = mantenimientoService.guardarMantenimiento(mantenimiento);
+            if (!guardado) {
+                resultadoMantenimientoLabel.setText("No se pudo guardar el mantenimiento");
+                return;
+            }
+            resultadoMantenimientoLabel.setText("Mantenimiento guardado");
+        }
+
+        refrescarMantenimientos(seleccionado.getMatricula());
+        limpiarFormularioMantenimiento();
+        prepararNuevoMantenimiento();
+    }
+
+    private Integer leerEntero(String texto, String nombreCampo, Label etiquetaError) {
+        String valor = texto.trim();
+        if (valor.isEmpty()) {
+            etiquetaError.setText(nombreCampo + " no puede estar vacío");
+            return null;
+        }
         try {
-            LocalDate fechaRevision = fechaMantenimientoPicker.getValue();
-            String descripcion = descripcionMantenimientoField.getText().trim();
-            double coste = Double.parseDouble(costeMantenimientoField.getText().replace(",", "."));
-            int kmEnLaRevision = Integer.parseInt(kmMantenimientoField.getText());
-
-            String errorFecha = Validacion.validarFechaMantenimiento(fechaRevision);
-            if (!errorFecha.isEmpty()) {
-                resultadoMantenimientoLabel.setText(errorFecha);
-                return;
-            }
-
-            String errorDescripcion = Validacion.validarDescripcionMantenimiento(descripcion);
-            if (!errorDescripcion.isEmpty()) {
-                resultadoMantenimientoLabel.setText(errorDescripcion);
-                return;
-            }
-
-            String errorCoste = Validacion.validarCosteMantenimiento(coste);
-            if (!errorCoste.isEmpty()) {
-                resultadoMantenimientoLabel.setText(errorCoste);
-                return;
-            }
-
-            String errorKm = Validacion.validarKmMantenimiento(kmEnLaRevision, seleccionado.getKilometraje());
-            if (!errorKm.isEmpty()) {
-                resultadoMantenimientoLabel.setText(errorKm);
-                return;
-            }
-
-            Mantenimiento mantenimiento = new Mantenimiento(
-                    seleccionado.getMatricula(),
-                    fechaRevision,
-                    descripcion,
-                    coste,
-                    kmEnLaRevision);
-
-            Mantenimiento mantenimientoSeleccionado = mantenimientosList.getSelectionModel().getSelectedItem();
-            if (mantenimientoSeleccionado != null) {
-                mantenimiento.setId(mantenimientoSeleccionado.getId());
-                boolean actualizado = mantenimientoService.actualizarMantenimiento(mantenimiento);
-                if (!actualizado) {
-                    resultadoMantenimientoLabel.setText("No se pudo actualizar el mantenimiento");
-                    return;
-                }
-                resultadoMantenimientoLabel.setText("Mantenimiento actualizado");
-            } else {
-                boolean guardado = mantenimientoService.guardarMantenimiento(mantenimiento);
-                if (!guardado) {
-                    resultadoMantenimientoLabel.setText("No se pudo guardar el mantenimiento");
-                    return;
-                }
-                resultadoMantenimientoLabel.setText("Mantenimiento guardado");
-            }
-
-            refrescarMantenimientos(seleccionado.getMatricula());
-            limpiarFormularioMantenimiento();
-            prepararNuevoMantenimiento();
-
+            return Integer.parseInt(valor);
         } catch (NumberFormatException e) {
-            resultadoMantenimientoLabel.setText("Coste y km deben ser números");
+            etiquetaError.setText(nombreCampo + " debe ser un número entero");
+            return null;
+        }
+    }
+
+    private Double leerDecimal(String texto, String nombreCampo, Label etiquetaError) {
+        String valor = texto.trim().replace(",", ".");
+        if (valor.isEmpty()) {
+            etiquetaError.setText(nombreCampo + " no puede estar vacío");
+            return null;
+        }
+        try {
+            return Double.parseDouble(valor);
+        } catch (NumberFormatException e) {
+            etiquetaError.setText(nombreCampo + " debe ser un número");
+            return null;
         }
     }
 
