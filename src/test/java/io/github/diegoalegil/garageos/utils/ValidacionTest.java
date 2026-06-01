@@ -21,6 +21,21 @@ class ValidacionTest {
     }
 
     @Test
+    void validarMatriculaDevuelveVacioCuandoTieneMinusculas() {
+        assertEquals("", Validacion.validarMatricula("2325htm"));
+    }
+
+    @Test
+    void validarMatriculaDevuelveVacioCuandoTieneTresNumeros() {
+        assertEquals("", Validacion.validarMatricula("999BCD"));
+    }
+
+    @Test
+    void validarMatriculaDevuelveErrorCuandoNoTieneFormatoCorrecto() {
+        assertEquals("La matrícula debe tener formato 123ABC o 1234ABC", Validacion.validarMatricula("HTM2325"));
+    }
+
+    @Test
     void validarMarcaDevuelveErrorCuandoEstaVacia() {
         assertEquals("La marca no puede estar vacía", Validacion.validarMarca(""));
     }

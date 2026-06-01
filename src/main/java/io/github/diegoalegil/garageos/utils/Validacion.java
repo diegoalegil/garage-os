@@ -1,6 +1,7 @@
 package io.github.diegoalegil.garageos.utils;
 
 import java.time.LocalDate;
+import java.util.Locale;
 
 import io.github.diegoalegil.garageos.models.TipoPropulsion;
 
@@ -9,6 +10,9 @@ public class Validacion {
     public static String validarMatricula(String matricula) {
         if (matricula == null || matricula.trim().isEmpty()) {
             return "La matrícula no puede estar vacía";
+        }
+        if (!matricula.trim().toUpperCase(Locale.ROOT).matches("\\d{3,4}[A-Z]{3}")) {
+            return "La matrícula debe tener formato 123ABC o 1234ABC";
         }
         return "";
     }

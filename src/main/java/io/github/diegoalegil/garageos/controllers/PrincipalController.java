@@ -217,9 +217,9 @@ public class PrincipalController {
     @FXML
     private void guardarVehiculo() {
         try {
-            String matricula = matriculaField.getText();
-            String marca = marcaField.getText();
-            String modelo = modeloField.getText();
+            String matricula = matriculaField.getText().trim().toUpperCase(Locale.ROOT);
+            String marca = marcaField.getText().trim();
+            String modelo = modeloField.getText().trim();
             int anio = Integer.parseInt(anioField.getText());
             int kilometraje = Integer.parseInt(kilometrajeField.getText());
             TipoPropulsion propulsion = propulsionCombo.getValue();
